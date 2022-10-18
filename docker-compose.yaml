@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    container_name: go-db
+    build: ./dockerfiles/db
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=db_user
+    networks:
+      - go-net
+  web:
+    restart: always
+    container_name: go-web
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/web/Dockerfile
+    ports:
+      - "5000"
+    networks:
+      - go-net
+    depends_on:
+      - db
+  nginx:
+    restart: always
+    container_name: go-nginx
+    build: ./dockerfiles/nginx
+    ports:
+      - "80:80"
+    networks:
+      - go-net
+    depends_on:
+      - db
+      - web
+
+networks:
+  go-net:
+    driver: bridge

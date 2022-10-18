@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Users Page | Yasin Bozat</title>
+    <style>
+		body{
+			background-color: #3d3e3e; 
+		}
+      .table-dark{
+        background-color: #212529;
+        width: 100%;
+        height: 100%;
+      }
+      td, th{
+        text-align: left;
+        padding: 10px;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #3d3e3e;
+      }
+      th{
+        font-size: 20px;
+      }
+      #top-div{
+        width: auto; 
+        height: 60px; 
+        background-color:#212529; 
+      }
+      *, body{
+        margin: 0;
+        padding: 0;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: white;
+      }
+      button{
+        padding: 15px;
+        border-radius: 10px;
+        border-width: 0px;
+        cursor:pointer;
+      }
+      #div-btn{
+        display: flex;
+        margin-right: auto;
+      margin-left: auto;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="top-div"> 
+      <div>
+           <h1 style="width: fit-content; margin-left: auto; padding-top: 10px; margin-right: auto;">Go | Yasin Bozat</h1>
+      </div>
+   </div>
+    <div  style="margin-top: 20px;">
+        <div id="div-btn">
+          <div id="div-btn">
+            <form method="get" action="/users" style="margin-bottom: 20px;">     
+              <input id="dec-offset" name="offset" type="hidden" value=${offset} placeholder="Start Value" />
+              <button type="submit" value="submit" style="width: 200px; background-color: #212529;"><</button>
+            </form>
+          </div>
+          <div id="div-btn">
+            <form method="get" action="/users" style="margin-bottom: 20px;">     
+                <input id="inc-offset" name="offset" type="hidden" value=${offset} placeholder="Start Value"/>
+                <button type="submit" value="submit"  style="width: 200px; background-color: #212529;">></button>
+            </form>
+          </div>
+        </div>
+      <table id='my-table' class="table table-dark">
+      <thead>
+          <th scope="col">#</td>
+          <th>Name</td>
+          <th>Mail</td>
+          <th>Phone Number</td>
+          <th>Country</td>
+      </thead>
+    </table>
+
+    <script>
+      
+      var incOffsetNum = parseInt({{.Offset}}) +50;
+      var decOffsetNum = parseInt({{.Offset}}) -50;
+
+      var str ={{.Users}};
+
+      if (str.length > 0)
+        document.getElementById("inc-offset").value = incOffsetNum.toString();
+      else
+        document.getElementById("inc-offset").value = (incOffsetNum -50).toString();    
+
+      if(decOffsetNum >= 0)
+        document.getElementById("dec-offset").value = decOffsetNum.toString();
+      else
+        document.getElementById("dec-offset").value = "0";
+
+      for (var i = 0; i < str.length; i++) {
+        const element = document.createElement('tbody');
+        element.innerHTML = `
+                        <tr>
+                          <td> ${str[i].Id} </span>
+                          <td > ${str[i].Name} </span>
+                          <td > ${str[i].Mail} </span>
+                          <td > ${str[i].PhoneNumber} </span>
+                          <td > ${str[i].Country} </span>
+                        </tr>
+                  `
+      
+        document.querySelector('#my-table').append(element);
+        
+      }
+    </script>
+    
+    
+     </body>
+</html>   
